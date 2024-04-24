@@ -1,6 +1,6 @@
 const canvas = document.getElementById('gameCanvas');
 const logo = document.getElementsByClassName('logo-container')[0];
-const timer = 10;
+let timer = 10;
 function startGame() {
   canvas.style.display = 'block';
   logo.style.display = 'none';
@@ -102,8 +102,23 @@ function startGame() {
     ctx.fillText('Score: ' + score, 16, canvas.height - 20);
   }
 
+  function finish() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '32px Arial';
+    ctx.fillStyle = '#0095DD';
+    ctx.fillText('Game Over!    Your Score: ' + score, canvas.width / 2 - 200, canvas.height / 2 - 40);
+    button[0].style.display = 'block';
+  }
+
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = 'bold 200px Arial';
+    ctx.fillStyle = '#fff';
+    ctx.fillText(timer, canvas.width / 2 - 100, canvas.height / 2 + 100);
+    if(timer<0){
+      finish();
+      return;
+    }
     drawBricks();
     drawBall();
     drawPaddle();
@@ -119,11 +134,7 @@ function startGame() {
       if (x > paddleX && x < paddleX + paddleWidth) {
         dy = -dy;
       } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.font = '32px Arial';
-        ctx.fillStyle = '#0095DD';
-        ctx.fillText('Game Over!    Your Score: ' + score, canvas.width / 2 - 200, canvas.height / 2 - 40);
-        button[0].style.display = 'block';
+        finish();
         return;
       }
     }
@@ -181,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     timer = 10;
     setInterval(function () {
       timer--;
-    });
+    }, 1000);
     const utilityButton = document.getElementById('utilityButton');
     utilityButton.addEventListener('click', () => {
       if (utilityButton.innerText == 'Tutorial') {
