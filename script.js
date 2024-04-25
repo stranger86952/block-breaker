@@ -1,6 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const logo = document.getElementsByClassName('logo-container')[0];
-let timer = 10;
+let timer = 60;
+let timerInterval;
 function startGame() {
   canvas.style.display = 'block';
   logo.style.display = 'none';
@@ -108,14 +109,17 @@ function startGame() {
     ctx.fillStyle = '#0095DD';
     ctx.fillText('Game Over!    Your Score: ' + score, canvas.width / 2 - 200, canvas.height / 2 - 40);
     button[0].style.display = 'block';
+    clearInterval(timerInterval);
+    timer = 60;
   }
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
     ctx.font = 'bold 200px Arial';
-    ctx.fillStyle = '#fff';
+    if(timer < 11) ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
     ctx.fillText(timer, canvas.width / 2 - 100, canvas.height / 2 + 100);
-    if(timer<0){
+    if(timer < 0) {
       finish();
       return;
     }
@@ -189,14 +193,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const startButton = document.getElementById('startButton');
   startButton.addEventListener('click', () => {
     startGame();
-    timer = 10;
-    setInterval(function () {
+    timerInterval = setInterval(function () {
       timer--;
     }, 1000);
     const utilityButton = document.getElementById('utilityButton');
     utilityButton.addEventListener('click', () => {
       if (utilityButton.innerText == 'Tutorial') {
-
+        // わー.
       } else {
         logo.style.display = 'block';
         startButton.innerText = 'Start';
