@@ -14,8 +14,10 @@ function startGame() {
   const ballRadius = 10;
   let x = canvas.width / 2;
   let y = canvas.height - 30;
-  let dx = 2;
-  let dy = -2;
+  let angle = 30 * (2 * Math.random() + 1) * Math.PI / 180;
+  let dx = 3 * Math.cos(angle);
+  let dy = -3 * Math.sin(angle);
+  console.log(dx,dy)
   const paddleHeight = 10;
   const paddleWidth = 150;
   let paddleX = (canvas.width - paddleWidth) / 2;
@@ -118,7 +120,8 @@ function startGame() {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
     ctx.font = 'bold 200px Arial';
     if(timer < 11) ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
-    ctx.fillText(timer, canvas.width / 2 - 100, canvas.height / 2 + 100);
+    if(timer < 10) ctx.fillText(' '+timer, canvas.width / 2 - 100, canvas.height / 2 + 100);
+    else ctx.fillText(timer, canvas.width / 2 - 100, canvas.height / 2 + 100);
     if(timer < 0) {
       finish();
       return;
@@ -196,16 +199,16 @@ document.addEventListener('DOMContentLoaded', () => {
     timerInterval = setInterval(function () {
       timer--;
     }, 1000);
-    const utilityButton = document.getElementById('utilityButton');
-    utilityButton.addEventListener('click', () => {
-      if (utilityButton.innerText == 'Tutorial') {
-        // わー.
-      } else {
-        logo.style.display = 'block';
-        startButton.innerText = 'Start';
-        utilityButton.innerText = 'Tutorial';
-        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-      }
-    });
+  });
+  const utilityButton = document.getElementById('utilityButton');
+  utilityButton.addEventListener('click', () => {
+    if (utilityButton.innerText == 'Tutorial') {
+      alert("ルール詳細はポスターをご覧ください。");
+    } else {
+      logo.style.display = 'block';
+      startButton.innerText = 'Start';
+      utilityButton.innerText = 'Tutorial';
+      canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    }
   });
 });
