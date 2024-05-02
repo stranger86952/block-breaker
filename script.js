@@ -1,4 +1,4 @@
-let globalTimer = 180;
+let globalTimer = 190;
 const canvas = document.getElementById('gameCanvas');
 const logo = document.getElementsByClassName('logo-container')[0];
 let timer = 60;
