@@ -10,6 +10,28 @@
 </head>
 
 <body>
+  <h2 id="globalTimer">交代までの時間 : 00:00</h2>
+  <div class="alert">
+    <p>3分経過しました、次の人と交代してください</p>
+    <p><button id="closeButton" onclick="location.reload();">OK</button></p>
+  </div>
+  <div class="explanation">
+    <h2>ゲームの説明</h2>
+    <ul>
+      <li>ブロック崩しで高スコアを目指すゲームです。</li>
+      <li>球が下に落ちてしまうか、60秒経つとゲームが終了し、スコアが発表されます。</li>
+      <li>球がブロックに当たると1点入り、ブロックが落下し始めます。</li>
+      <li>さらに、落下中のブロックは5回までクリックできて、1クリックで2点入ります。</li>
+      <li>5回クリックされたブロックは消滅し、追加で5点入ります。</li>
+      <li>3分経ったら通知が来るので、次の人に譲ってください。</li>
+    </ul>
+    <h2>操作方法</h2>
+    <ul>
+      <li>下のバーを矢印キーで動かして球が落ちないようにします。</li>
+      <li>球が当たったブロックは落下し、落下中はマウスでクリックできます。</li>
+    </ul>
+    <button id="closeButton" onclick="document.getElementsByClassName('explanation')[0].style.display = 'none';">OK</button>
+  </div>
   <div class="container">
     <div class="logo-container">
       <div class="logo"><img src="cube.svg"><span>Block Breaker</span></div>

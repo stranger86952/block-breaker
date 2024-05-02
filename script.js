@@ -1,23 +1,31 @@
+let globalTimer = 180;
 const canvas = document.getElementById('gameCanvas');
 const logo = document.getElementsByClassName('logo-container')[0];
 let timer = 60;
 let timerInterval;
+
 function startGame() {
   canvas.style.display = 'block';
   logo.style.display = 'none';
-  const button = document.getElementsByClassName('button-container');
-  button[0].style.display = 'none';
+  const buttonContainer = document.getElementsByClassName('button-container')[0];
+  buttonContainer.style.display = 'none';
   const buttons = document.getElementsByTagName('button');
-  buttons[0].innerText = 'Restart'
-  buttons[1].innerText = 'Home'
+  buttons[2].innerText = 'Restart'
+  buttons[3].innerText = 'Home'
   const ctx = canvas.getContext('2d');
   const ballRadius = 10;
   let x = canvas.width / 2;
   let y = canvas.height - 30;
-  let angle = 30 * (2 * Math.random() + 1) * Math.PI / 180;
+  let angle;
+  const random = Math.random();
+  if (random < 0.5) {
+    angle = (Math.floor(Math.random() * 41) + 40) * Math.PI / 180;
+  } else {
+    angle = (Math.floor(Math.random() * 41) + 100) * Math.PI / 180;
+  }
+  
   let dx = 3 * Math.cos(angle);
   let dy = -3 * Math.sin(angle);
-  console.log(dx,dy)
   const paddleHeight = 10;
   const paddleWidth = 150;
   let paddleX = (canvas.width - paddleWidth) / 2;
@@ -100,17 +108,17 @@ function startGame() {
   }
 
   function drawScore() {
-    ctx.font = '32px Arial';
+    ctx.font = 'bold 32px "DS-Digital"';
     ctx.fillStyle = '#0095DD';
     ctx.fillText('Score: ' + score, 16, canvas.height - 20);
   }
 
   function finish() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = '32px Arial';
+    ctx.font = 'bold 32px "DS-Digital"';
     ctx.fillStyle = '#0095DD';
     ctx.fillText('Game Over!    Your Score: ' + score, canvas.width / 2 - 200, canvas.height / 2 - 40);
-    button[0].style.display = 'block';
+    buttonContainer.style.display = 'block';
     clearInterval(timerInterval);
     timer = 60;
   }
@@ -118,7 +126,7 @@ function startGame() {
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-    ctx.font = 'bold 200px Arial';
+    ctx.font = 'bold 200px "DS-Digital"';
     if(timer < 11) ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
     if(timer < 10) ctx.fillText(' '+timer, canvas.width / 2 - 100, canvas.height / 2 + 100);
     else ctx.fillText(timer, canvas.width / 2 - 100, canvas.height / 2 + 100);
@@ -137,8 +145,11 @@ function startGame() {
     }
     if (y + dy < ballRadius) {
       dy = -dy;
-    } else if (y + dy > canvas.height - ballRadius) {
+    } else if (y + dy > canvas.height - ballRadius - paddleHeight) {
       if (x > paddleX && x < paddleX + paddleWidth) {
+        let collidePoint = x - (paddleX + paddleWidth / 2);
+        collidePoint = collidePoint / (paddleWidth / 2);
+        angle = collidePoint * Math.PI / 2.5;
         dy = -dy;
       } else {
         finish();
@@ -193,6 +204,14 @@ function startGame() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  let globalTimerInterval = setInterval(function () {
+    document.getElementById('globalTimer').textContent = `交代までの時間 : ${String(Math.floor(globalTimer / 60)).padStart(2, '0')}:${String(globalTimer % 60).padStart(2, '0')}`;;
+    globalTimer--;
+    if(globalTimer < 0){
+      document.getElementsByClassName('alert')[0].style.display = 'flex';
+      clearInterval(globalTimerInterval);
+    }
+  }, 1000);
   const startButton = document.getElementById('startButton');
   startButton.addEventListener('click', () => {
     startGame();
@@ -203,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const utilityButton = document.getElementById('utilityButton');
   utilityButton.addEventListener('click', () => {
     if (utilityButton.innerText == 'Tutorial') {
-      alert("ルール詳細はポスターをご覧ください。");
+      document.getElementsByClassName('explanation')[0].style.display = 'flex';
     } else {
       logo.style.display = 'block';
       startButton.innerText = 'Start';
